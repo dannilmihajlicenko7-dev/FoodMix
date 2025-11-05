@@ -1,320 +1,439 @@
+```html
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Піцерія & Суші-Бар "FoodMix"</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>EatWave — Доставка: піца, суші, бургери, напої</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-body {
-  font-family: "Arial", sans-serif;
-  background-color: #fff5e6;
-  margin: 0;
-  padding: 0;
-}
-header {
-  background-color: #ff9933;
-  color: white;
-  padding: 20px;
-  text-align: center;
-  font-size: 28px;
-  font-weight: bold;
-}
-nav {
-  display: flex;
-  justify-content: center;
-  background-color: #ffcc80;
-  padding: 10px 0;
-  flex-wrap: wrap;
-}
-nav button {
-  background-color: #ff9933;
-  color: white;
-  border: none;
-  margin: 5px;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-}
-nav button:hover {
-  background-color: #ff6600;
-}
-main {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  flex-wrap: wrap;
-}
-#menu {
-  width: 60%;
-}
-.category {
-  background-color: #ffe0b3;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-.item {
-  display: flex;
-  justify-content: space-between;
-  background-color: white;
-  margin: 5px 0;
-  padding: 10px;
-  border-radius: 6px;
-}
-.item button {
-  background-color: #ff9933;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 6px 12px;
-  cursor: pointer;
-}
-.item button:hover {
-  background-color: #ff6600;
-}
-#cart {
-  width: 35%;
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-}
-#cart h2 {
-  text-align: center;
-}
-#cart ul {
-  list-style-type: none;
-  padding: 0;
-}
-#cart li {
-  background-color: #fff5e6;
-  margin: 5px 0;
-  padding: 8px;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.remove-btn {
-  background-color: #ff3333;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 8px;
-  cursor: pointer;
-}
-.remove-btn:hover {
-  background-color: #cc0000;
-}
-button.pay {
-  width: 100%;
-  margin-top: 10px;
-  font-size: 18px;
-  border-radius: 8px;
-  padding: 12px;
-}
-#receipt {
-  display: none;
-  background-color: white;
-  padding: 20px;
-  margin: 20px;
-  border-radius: 10px;
-  text-align: center;
-}
-#qrcode {
-  margin-top: 10px;
-}
-.download-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-top: 10px;
-}
-.download-btn:hover {
-  background-color: #0056b3;
-}
+  :root{
+    --bg:#ffffff;
+    --card:#f7fbff;
+    --accent:#0b74ff;
+    --accent-2:#0a63d8;
+    --muted:#6b7280;
+    --text:#0f1724;
+    --glass: rgba(11,116,255,0.08);
+    --shadow: 0 6px 18px rgba(11,116,255,0.08);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter, system-ui, Arial, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  header{
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    color:white;
+    padding:18px 22px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    position:sticky;
+    top:0;
+    z-index:40;
+    box-shadow: 0 4px 14px rgba(11,116,255,0.12);
+  }
+  .logo{
+    display:flex;align-items:center;gap:12px;font-weight:700;font-size:20px;
+  }
+  .logo .mark{
+    width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#fff 15%, rgba(255,255,255,0.2));
+    display:flex;align-items:center;justify-content:center;color:var(--accent-2);font-weight:800;
+    box-shadow: var(--shadow);
+  }
+  .hero{
+    padding:22px;display:flex;gap:20px;align-items:center;justify-content:space-between;
+  }
+  .hero h1{margin:0;font-size:28px}
+  .hero p{margin:6px 0 0;color:var(--muted)}
+
+  main.container{
+    max-width:1200px;margin:18px auto;padding:12px;
+    display:grid;grid-template-columns: 1fr 360px;gap:20px;
+  }
+
+  /* left: menu */
+  .menu{
+    background:transparent;
+    padding:6px;
+  }
+  .controls{
+    display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;
+  }
+  .search{
+    flex:1;min-width:200px;display:flex;align-items:center;background:#fff;border:1px solid #e6eefc;padding:8px 10px;border-radius:10px;
+  }
+  .search input{
+    border:0;outline:none;font-size:14px;color:var(--text);width:100%;
+  }
+  .filter{
+    display:flex;gap:8px;align-items:center;
+  }
+  .chip{
+    background:var(--card);border:1px solid rgba(11,116,255,0.08);padding:8px 12px;border-radius:999px;font-weight:600;color:var(--accent-2);cursor:pointer;
+  }
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;
+  }
+  .card{
+    background:white;border-radius:12px;padding:12px;border:1px solid #f0f6ff;box-shadow: 0 10px 30px rgba(15,23,36,0.03);
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .card img{width:100%;height:130px;object-fit:cover;border-radius:8px}
+  .card h3{margin:0;font-size:16px}
+  .muted{color:var(--muted);font-size:13px}
+  .price-row{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+  .add-btn{
+    background:var(--accent);color:white;border:0;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600;
+  }
+
+  /* right: cart */
+  .cart{
+    position:sticky;top:90px;background:#ffffff;border-radius:12px;padding:14px;border:1px solid #eaf2ff;
+    box-shadow: 0 8px 24px rgba(11,116,255,0.04);
+    height:fit-content;
+  }
+  .cart h2{margin:0 0 10px 0}
+  .cart-list{max-height:420px;overflow:auto;margin-bottom:12px;padding-right:6px}
+  .cart-item{display:flex;gap:10px;align-items:center;padding:8px;border-radius:8px;background:var(--card);margin-bottom:8px}
+  .cart-item img{width:56px;height:40px;object-fit:cover;border-radius:6px}
+  .cart-item .meta{flex:1}
+  .qty{
+    display:flex;align-items:center;gap:6px;background:white;border-radius:8px;padding:4px;border:1px solid #e6eefc;
+  }
+  .qty button{background:transparent;border:0;cursor:pointer;color:var(--accent-2);font-weight:700;padding:4px 8px}
+  .summary{border-top:1px dashed #e6eefc;padding-top:12px;margin-top:6px}
+  .summary-row{display:flex;justify-content:space-between;padding:6px 0;font-weight:600}
+  .pay-buttons{display:flex;gap:10px;margin-top:10px}
+  .pay{
+    flex:1;padding:10px;border-radius:8px;border:0;cursor:pointer;font-weight:700;
+    color:white;background:var(--accent-2);
+  }
+  .pay.cash{background:#0b7fff26;color:var(--accent-2);border:2px solid var(--accent);font-weight:700}
+
+  /* responsive */
+  @media (max-width:1060px){
+    main.container{grid-template-columns:1fr 320px}
+  }
+  @media (max-width:880px){
+    header{flex-direction:column;align-items:flex-start}
+    main.container{grid-template-columns:1fr; padding:12px}
+    .cart{position:static;top:unset;margin-top:12px}
+  }
+  /* small scroll */
+  ::-webkit-scrollbar{height:6px;width:6px}
+  ::-webkit-scrollbar-thumb{background:#d1e6ff;border-radius:10px}
 </style>
 </head>
 <body>
-<header>🍕 Піцерія & Суші-Бар "FoodMix" 🍣🍔</header>
 
-<nav>
-  <button onclick="showCategory('pizza')">Піца</button>
-  <button onclick="showCategory('sushi')">Суші</button>
-  <button onclick="showCategory('burgers')">Бургери</button>
-  <button onclick="showCategory('drinks')">Напої</button>
-  <button onclick="clearCart()">🗑 Очистити кошик</button>
-</nav>
+<header>
+  <div class="logo">
+    <div class="mark">EW</div>
+    <div>
+      <div>EatWave</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.9);font-weight:500">Доставка їжі • Піца • Суші • Бургери • Напої</div>
+    </div>
+  </div>
+  <div style="margin-left:auto;text-align:right">
+    <div style="font-weight:700">Доставка сьогодні</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.95)">Швидко, смачно, безпечно</div>
+  </div>
+</header>
 
-<main>
-  <section id="menu"></section>
-  <section id="cart">
-    <h2>🛒 Ваш кошик</h2>
-    <ul id="cartList"></ul>
-    <h3 id="total">Загальна сума: 0 грн</h3>
-    <button class="pay" style="background:#3399ff;color:white" onclick="pay('Карта')">💳 Оплатити картою</button>
-    <button class="pay" style="background:#33cc33;color:white" onclick="pay('Готівка')">💵 Оплатити готівкою</button>
-  </section>
-</main>
-
-<section id="receipt">
-  <div id="receiptText"></div>
-  <div id="qrcode"></div>
-  <button class="download-btn" onclick="downloadPDF()">⬇️ Завантажити чек (PDF)</button>
+<section class="hero" style="max-width:1200px;margin:12px auto;padding:6px 14px">
+  <div>
+    <h1 style="margin:0">EatWave — доставка твоєї улюбленої їжі</h1>
+    <p style="margin:6px 0 0;color:var(--muted)">Велике меню, швидке оформлення, ПДВ 20% вже враховується в чеку.</p>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center">
+    <div style="background:white;padding:10px;border-radius:10px;box-shadow:0 6px 18px rgba(11,116,255,0.06);">
+      <strong>Місто:</strong> Київ
+    </div>
+    <div style="background:var(--glass);padding:10px;border-radius:10px;color:var(--accent-2);font-weight:700">Доставимо за ~35 хв</div>
+  </div>
 </section>
 
-<!-- Підключення бібліотек -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<main class="container">
+  <section class="menu">
+    <div class="controls">
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#94bfff" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="search" placeholder="Шукати піцу, суші, бургер..." aria-label="Пошук">
+      </div>
+      <div class="filter">
+        <div class="chip" data-cat="all" onclick="filterCategory('all')">Усі</div>
+        <div class="chip" data-cat="pizza" onclick="filterCategory('pizza')">Піца</div>
+        <div class="chip" data-cat="sushi" onclick="filterCategory('sushi')">Суші</div>
+        <div class="chip" data-cat="burgers" onclick="filterCategory('burgers')">Бургери</div>
+        <div class="chip" data-cat="drinks" onclick="filterCategory('drinks')">Напої</div>
+      </div>
+    </div>
+
+    <div id="itemsGrid" class="grid" aria-live="polite"></div>
+  </section>
+
+  <aside class="cart" aria-labelledby="cartTitle">
+    <h2 id="cartTitle">🛒 Кошик</h2>
+    <div id="cartList" class="cart-list"></div>
+
+    <div class="summary">
+      <div class="summary-row"><div>Проміжна сума</div><div id="sub">0 ₴</div></div>
+      <div class="summary-row"><div>ПДВ (20%)</div><div id="vat">0 ₴</div></div>
+      <div class="summary-row" style="font-size:18px"><div>До сплати</div><div id="grand">0 ₴</div></div>
+      <div style="margin-top:8px" class="pay-buttons">
+        <button class="pay" onclick="checkout('card')">Оплатити картою</button>
+        <button class="pay cash" onclick="checkout('cash')">Оплатити готівкою</button>
+      </div>
+      <div style="margin-top:8px; font-size:13px;color:var(--muted)">Кошик зберігається локально в браузері</div>
+    </div>
+  </aside>
+</main>
+
+<!-- Receipt modal -->
+<div id="receiptModal" style="display:none;position:fixed;inset:0;background:rgba(8,16,32,0.45);align-items:center;justify-content:center;z-index:80">
+  <div style="background:white;padding:18px;border-radius:12px;max-width:520px;width:94%;box-shadow:0 20px 60px rgba(2,6,23,0.3)">
+    <h3 style="margin:0 0 6px 0">Електронний чек</h3>
+    <div id="receiptContent" style="font-family:monospace;font-size:14px;color:#123"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+      <button onclick="printReceipt()" style="background:var(--accent);color:white;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Друк / Зберегти</button>
+      <button onclick="closeReceipt()" style="background:#f0f2f5;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Закрити</button>
+    </div>
+  </div>
+</div>
 
 <script>
-const menuData = {
-  pizza: {
-    "Маргарита": 180, "Пепероні": 220, "4 Сири": 250, "Гавайська": 200,
-    "Карбонара": 230, "Діабло": 240, "Барбекю": 260, "Вегетаріанська": 210
-  },
-  sushi: {
-    "Філадельфія": 210, "Каліфорнія": 200, "Дракон": 240, "Сет Імператор": 420,
-    "Сет Самурай": 350, "Сет Токіо": 360, "Сет Кіото": 400, "Сет Морський": 430,
-    "Сет Гейша": 370, "Сет Сакура": 390, "Сет Класік": 410, "Сет Блакитний океан": 450
-  },
-  burgers: {
-    "Чізбургер": 150, "Дабл Чізбургер": 200, "Бекон Бургер": 220,
-    "Курячий Бургер": 180, "BBQ Бургер": 230, "Фіш Бургер": 190
-  },
-  drinks: {
-    "Кола 0.5л": 40, "Фанта 0.5л": 40, "Сік апельсиновий": 45, "Вода": 30, "Енергетик": 55
-  }
-};
+/* =========================
+   Data: 30 items per category
+   Images use picsum.photos with unique seeds
+   ========================= */
+const VAT_RATE = 0.20;
 
-let cart = JSON.parse(localStorage.getItem("cart")) || {};
-
-function showCategory(cat) {
-  const menu = document.getElementById("menu");
-  menu.innerHTML = "";
-  const block = document.createElement("div");
-  block.className = "category";
-  block.innerHTML = `<h2>${cat.charAt(0).toUpperCase() + cat.slice(1)}</h2>`;
-  for (let item in menuData[cat]) {
-    const div = document.createElement("div");
-    div.className = "item";
-    div.innerHTML = `<span>${item} — ${menuData[cat][item]} грн</span>
-                     <button onclick="addToCart('${item}', ${menuData[cat][item]})">Додати</button>`;
-    block.appendChild(div);
+function mkItems(prefix, count, basePrice, seedBase, descPrefix){
+  const arr=[];
+  for(let i=1;i<=count;i++){
+    const name = `${prefix} ${i}`;
+    const price = basePrice + Math.floor(Math.random()*60); // small variability
+    const seed = `${seedBase}${i}`;
+    const img = `https://picsum.photos/seed/${encodeURIComponent(seed)}/640/420`;
+    const desc = `${descPrefix} — смачно та ароматно.`;
+    arr.push({id: `${prefix.toLowerCase().replace(/\s/g,'')}-${i}`, name, price, img, desc, category:prefix.toLowerCase()});
   }
-  menu.appendChild(block);
+  return arr;
 }
 
-function addToCart(name, price) {
-  if (!cart[name]) cart[name] = {price: price, quantity: 1};
-  else cart[name].quantity++;
-  saveCart();
-  updateCart();
-}
+const pizzas = mkItems("Піца",30,180,"pizza_seed_","Тонке тісто, свіжі інгредієнти");
+const sushis = mkItems("Суші",30,320,"sushi_seed_","Компактні сети та ролли");
+const burgers = mkItems("Бургер",30,160,"burger_seed_","Соковита котлета та соуси");
+const drinks = mkItems("Напій",30,35,"drink_seed_","Охолоджуючий та освіжаючий");
 
-function removeFromCart(name) {
-  if (cart[name]) {
-    cart[name].quantity--;
-    if (cart[name].quantity <= 0) delete cart[name];
-    saveCart();
-    updateCart();
-  }
-}
+const ITEMS = [...pizzas,...sushis,...burgers,...drinks];
 
-function clearCart() {
-  if (confirm("Очистити кошик?")) {
-    cart = {};
-    saveCart();
-    updateCart();
-  }
-}
+/* =========================
+   Cart & localStorage
+   ========================= */
+let CART = JSON.parse(localStorage.getItem('eatwave_cart') || '[]');
 
-function updateCart() {
-  const list = document.getElementById("cartList");
-  const totalEl = document.getElementById("total");
-  list.innerHTML = "";
-  let total = 0;
-  for (let item in cart) {
-    const li = document.createElement("li");
-    const line = `${item} (${cart[item].quantity} шт.) — ${cart[item].price * cart[item].quantity} грн`;
-    const btn = document.createElement("button");
-    btn.textContent = "❌";
-    btn.className = "remove-btn";
-    btn.onclick = () => removeFromCart(item);
-    li.textContent = line;
-    li.appendChild(btn);
-    list.appendChild(li);
-    total += cart[item].price * cart[item].quantity;
-  }
-  totalEl.textContent = "Загальна сума: " + total + " грн";
-}
+function saveCart(){ localStorage.setItem('eatwave_cart', JSON.stringify(CART)); }
 
-function saveCart() {
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
+function findItemById(id){ return ITEMS.find(it=>it.id===id); }
 
-function pay(method) {
-  if (Object.keys(cart).length === 0) {
-    alert("Ваш кошик порожній!");
-    return;
-  }
-  const total = Object.values(cart).reduce((sum, i) => sum + i.price * i.quantity, 0);
-  const tax = (total * 0.07).toFixed(2);
-  const grandTotal = (total + parseFloat(tax)).toFixed(2);
-  const orderId = Math.floor(Math.random() * 900000 + 100000);
-  const fiscal = Math.floor(Math.random() * 900000000 + 100000000);
-  const receiptData = {
-    orderId,
-    fiscal,
-    method,
-    total,
-    tax,
-    grandTotal,
-    date: new Date().toLocaleString(),
-  };
-  let text = `<h2>Електронний чек</h2>
-  <p><strong>Піцерія & Суші-Бар "FoodMix"</strong></p>
-  <p>Замовлення №${orderId}</p><hr>`;
-  for (let i in cart) {
-    text += `<p>${i} — ${cart[i].quantity} x ${cart[i].price} = ${cart[i].price * cart[i].quantity} грн</p>`;
-  }
-  text += `<hr><p>ПДВ: ${tax} грн</p>
-           <p><strong>До сплати: ${grandTotal} грн</strong></p>
-           <p>Оплата: ${method}</p>
-           <p>Фіскальний чек №${fiscal}</p>
-           <p>Дата: ${receiptData.date}</p>
-           <p>Дякуємо, що обрали нас! 🍕🍣🍔</p>`;
-  document.getElementById("receiptText").innerHTML = text;
-  document.getElementById("receipt").style.display = "block";
-  document.getElementById("qrcode").innerHTML = "";
-  new QRCode(document.getElementById("qrcode"), {
-    text: JSON.stringify(receiptData),
-    width: 150,
-    height: 150
+/* =========================
+   Render items
+   ========================= */
+const grid = document.getElementById('itemsGrid');
+
+function renderItems(list){
+  grid.innerHTML = "";
+  list.forEach(it=>{
+    const card = document.createElement('article');
+    card.className='card';
+    card.innerHTML = `
+      <img loading="lazy" src="${it.img}" alt="${it.name}">
+      <h3>${it.name}</h3>
+      <div class="muted" style="height:36px;overflow:hidden">${it.desc}</div>
+      <div class="price-row">
+        <div style="font-weight:700">${it.price} ₴</div>
+        <button class="add-btn" onclick="addToCart('${it.id}')">Додати</button>
+      </div>
+    `;
+    grid.appendChild(card);
   });
-  cart = {};
+}
+
+renderItems(ITEMS);
+
+/* =========================
+   Search & Filter
+   ========================= */
+const search = document.getElementById('search');
+let activeFilter = 'all';
+
+search.addEventListener('input', () => applyFilters());
+
+function filterCategory(cat){
+  activeFilter = cat;
+  document.querySelectorAll('.chip').forEach(c=>c.style.opacity = c.dataset.cat === cat ? '1' : '0.8');
+  applyFilters();
+}
+
+function applyFilters(){
+  const q = (search.value || '').trim().toLowerCase();
+  let filtered = ITEMS.filter(it=>{
+    if(activeFilter !== 'all' && it.category !== activeFilter) return false;
+    if(!q) return true;
+    return it.name.toLowerCase().includes(q) || it.desc.toLowerCase().includes(q);
+  });
+  renderItems(filtered);
+}
+
+/* =========================
+   Cart UI
+   ========================= */
+const cartListDiv = document.getElementById('cartList');
+const subEl = document.getElementById('sub');
+const vatEl = document.getElementById('vat');
+const grandEl = document.getElementById('grand');
+
+function renderCart(){
+  cartListDiv.innerHTML = "";
+  if(CART.length === 0){
+    cartListDiv.innerHTML = '<div style="color:var(--muted);padding:10px">Кошик порожній. Додайте страви.</div>';
+  } else {
+    CART.forEach(ci=>{
+      const it = findItemById(ci.id);
+      const row = document.createElement('div');
+      row.className='cart-item';
+      row.innerHTML = `
+        <img src="${it.img}" alt="${it.name}">
+        <div class="meta">
+          <div style="font-weight:700">${it.name}</div>
+          <div class="muted">${it.price} ₴</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          <div class="qty">
+            <button onclick="decreaseQty('${ci.id}')">−</button>
+            <div style="min-width:26px;text-align:center">${ci.qty}</div>
+            <button onclick="increaseQty('${ci.id}')">+</button>
+          </div>
+          <div style="font-weight:700">${(ci.qty * it.price)} ₴</div>
+          <button onclick="removeFromCart('${ci.id}')" style="background:transparent;border:0;color:var(--muted);cursor:pointer">Видалити</button>
+        </div>
+      `;
+      cartListDiv.appendChild(row);
+    });
+  }
+  updateSummary();
+}
+
+function addToCart(itemId){
+  const existing = CART.find(c=>c.id===itemId);
+  if(existing) existing.qty++;
+  else CART.push({id:itemId, qty:1});
   saveCart();
-  updateCart();
+  renderCart();
+  // visual feedback
+  const btn = event?.target;
+  if(btn){
+    btn.textContent = '✓';
+    setTimeout(()=>btn.textContent='Додати',600);
+  }
 }
 
-function downloadPDF() {
-  const element = document.getElementById("receipt");
-  const opt = {
-    margin: 0.5,
-    filename: 'FoodMix_Чек.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-  };
-  html2pdf().set(opt).from(element).save();
+function increaseQty(id){
+  const it = CART.find(c=>c.id===id);
+  if(it){ it.qty++; saveCart(); renderCart(); }
+}
+function decreaseQty(id){
+  const it = CART.find(c=>c.id===id);
+  if(it){ it.qty--; if(it.qty<=0) CART = CART.filter(c=>c.id!==id); saveCart(); renderCart(); }
+}
+function removeFromCart(id){
+  CART = CART.filter(c=>c.id!==id);
+  saveCart();
+  renderCart();
 }
 
-showCategory('pizza');
-updateCart();
+function updateSummary(){
+  let subtotal=0;
+  CART.forEach(ci=>{
+    const it = findItemById(ci.id);
+    subtotal += it.price * ci.qty;
+  });
+  const vat = subtotal * VAT_RATE;
+  const total = subtotal + vat;
+  subEl.textContent = formatUAH(subtotal);
+  vatEl.textContent = formatUAH(vat);
+  grandEl.textContent = formatUAH(total);
+}
+
+function formatUAH(n){ return `${n.toFixed(2)} ₴` }
+
+/* =========================
+   Checkout & receipt
+   ========================= */
+function checkout(method){
+  if(CART.length === 0){ alert('Кошик порожній'); return; }
+  const receipt = buildReceipt(method);
+  showReceiptModal(receipt);
+  // clear cart after checkout
+  CART = [];
+  saveCart();
+  renderCart();
+}
+
+function buildReceipt(method){
+  const now = new Date();
+  let lines = [];
+  lines.push("EatWave — Електронний чек");
+  lines.push("Адреса: www.eatwave.demo");
+  lines.push("Тел: +38 0XX XXX XXXX");
+  lines.push("Дата: " + now.toLocaleString());
+  lines.push("----------");
+  let subtotal = 0;
+  CART.forEach(ci=>{
+    const it = findItemById(ci.id);
+    const line = `${it.name} x${ci.qty} — ${it.price} ₴ → ${(it.price*ci.qty).toFixed(2)} ₴`;
+    lines.push(line);
+    subtotal += it.price * ci.qty;
+  });
+  lines.push("----------");
+  const vat = subtotal * VAT_RATE;
+  const total = subtotal + vat;
+  lines.push(`Проміжна сума: ${subtotal.toFixed(2)} ₴`);
+  lines.push(`ПДВ (20%): ${vat.toFixed(2)} ₴`);
+  lines.push(`До сплати: ${total.toFixed(2)} ₴`);
+  lines.push(`Оплата: ${method === 'card' ? 'Карткою' : 'Готівкою'}`);
+  lines.push(`Номер замовлення: #${Math.floor(Math.random()*900000+100000)}`);
+  lines.push("Дякуємо за замовлення! Залишіть відгук на EatWave.");
+  return lines.join("\n");
+}
+
+function showReceiptModal(text){
+  document.getElementById('receiptContent').textContent = text;
+  const modal = document.getElementById('receiptModal');
+  modal.style.display = 'flex';
+}
+function closeReceipt(){ document.getElementById('receiptModal').style.display = 'none'; }
+function printReceipt(){ window.print(); }
+
+/* =========================
+   Init
+   ========================= */
+renderCart();
+applyFilters();
+
+/* Optional: keyboard shortcut 'c' opens cart in mobile */
+document.addEventListener('keydown', (e)=>{
+  if(e.key.toLowerCase()==='c'){ window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'}); }
+});
 </script>
 </body>
 </html>
+```
