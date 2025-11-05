@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Піцерія & Суші-Бар "FoodMix"</title>
+<style>
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #fff5e6;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background-color: #ff9933;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+}
+nav {
+  display: flex;
+  justify-content: center;
+  background-color: #ffcc80;
+  padding: 10px 0;
+  flex-wrap: wrap;
+}
+nav button {
+  background-color: #ff9933;
+  color: white;
+  border: none;
+  margin: 5px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+nav button:hover {
+  background-color: #ff6600;
+}
+main {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  flex-wrap: wrap;
+}
+#menu {
+  width: 60%;
+}
+.category {
+  background-color: #ffe0b3;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+.item {
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 6px;
+}
+.item button {
+  background-color: #ff9933;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.item button:hover {
+  background-color: #ff6600;
+}
+#cart {
+  width: 35%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+#cart h2 {
+  text-align: center;
+}
+#cart ul {
+  list-style-type: none;
+  padding: 0;
+}
+#cart li {
+  background-color: #fff5e6;
+  margin: 5px 0;
+  padding: 8px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.remove-btn {
+  background-color: #ff3333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+.remove-btn:hover {
+  background-color: #cc0000;
+}
+button.pay {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 18px;
+  border-radius: 8px;
+  padding: 12px;
+}
+#receipt {
+  display: none;
+  background-color: white;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+#qrcode {
+  margin-top: 10px;
+}
+.download-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+.download-btn:hover {
+  background-color: #0056b3;
+}
+</style>
+</head>
+<body>
+<header>🍕 Піцерія & Суші-Бар "FoodMix" 🍣🍔</header>
+
+<nav>
+  <button onclick="showCategory('pizza')">Піца</button>
+  <button onclick="showCategory('sushi')">Суші</button>
+  <button onclick="showCategory('burgers')">Бургери</button>
+  <button onclick="showCategory('drinks')">Напої</button>
+  <button onclick="clearCart()">🗑 Очистити кошик</button>
+</nav>
+
+<main>
+  <section id="menu"></section>
+  <section id="cart">
+    <h2>🛒 Ваш кошик</h2>
+    <ul id="cartList"></ul>
+    <h3 id="total">Загальна сума: 0 грн</h3>
+    <button class="pay" style="background:#3399ff;color:white" onclick="pay('Карта')">💳 Оплатити картою</button>
+    <button class="pay" style="background:#33cc33;color:white" onclick="pay('Готівка')">💵 Оплатити готівкою</button>
+  </section>
+</main>
+
+<section id="receipt">
+  <div id="receiptText"></div>
+  <div id="qrcode"></div>
+  <button class="download-btn" onclick="downloadPDF()">⬇️ Завантажити чек (PDF)</button>
+</section>
+
+<!-- Підключення бібліотек -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+const menuData = {
+  pizza: {
+    "Маргарита": 180, "Пепероні": 220, "4 Сири": 250, "Гавайська": 200,
+    "Карбонара": 230, "Діабло": 240, "Барбекю": 260, "Вегетаріанська": 210
+  },
+  sushi: {
+    "Філадельфія": 210, "Каліфорнія": 200, "Дракон": 240, "Сет Імператор": 420,
+    "Сет Самурай": 350, "Сет Токіо": 360, "Сет Кіото": 400, "Сет Морський": 430,
+    "Сет Гейша": 370, "Сет Сакура": 390, "Сет Класік": 410, "Сет Блакитний океан": 450
+  },
+  burgers: {
+    "Чізбургер": 150, "Дабл Чізбургер": 200, "Бекон Бургер": 220,
+    "Курячий Бургер": 180, "BBQ Бургер": 230, "Фіш Бургер": 190
+  },
+  drinks: {
+    "Кола 0.5л": 40, "Фанта 0.5л": 40, "Сік апельсиновий": 45, "Вода": 30, "Енергетик": 55
+  }
+};
+
+let cart = JSON.parse(localStorage.getItem("cart")) || {};
+
+function showCategory(cat) {
+  const menu = document.getElementById("menu");
+  menu.innerHTML = "";
+  const block = document.createElement("div");
+  block.className = "category";
+  block.innerHTML = `<h2>${cat.charAt(0).toUpperCase() + cat.slice(1)}</h2>`;
+  for (let item in menuData[cat]) {
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `<span>${item} — ${menuData[cat][item]} грн</span>
+                     <button onclick="addToCart('${item}', ${menuData[cat][item]})">Додати</button>`;
+    block.appendChild(div);
+  }
+  menu.appendChild(block);
+}
+
+function addToCart(name, price) {
+  if (!cart[name]) cart[name] = {price: price, quantity: 1};
+  else cart[name].quantity++;
+  saveCart();
+  updateCart();
+}
+
+function removeFromCart(name) {
+  if (cart[name]) {
+    cart[name].quantity--;
+    if (cart[name].quantity <= 0) delete cart[name];
+    saveCart();
+    updateCart();
+  }
+}
+
+function clearCart() {
+  if (confirm("Очистити кошик?")) {
+    cart = {};
+    saveCart();
+    updateCart();
+  }
+}
+
+function updateCart() {
+  const list = document.getElementById("cartList");
+  const totalEl = document.getElementById("total");
+  list.innerHTML = "";
+  let total = 0;
+  for (let item in cart) {
+    const li = document.createElement("li");
+    const line = `${item} (${cart[item].quantity} шт.) — ${cart[item].price * cart[item].quantity} грн`;
+    const btn = document.createElement("button");
+    btn.textContent = "❌";
+    btn.className = "remove-btn";
+    btn.onclick = () => removeFromCart(item);
+    li.textContent = line;
+    li.appendChild(btn);
+    list.appendChild(li);
+    total += cart[item].price * cart[item].quantity;
+  }
+  totalEl.textContent = "Загальна сума: " + total + " грн";
+}
+
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+function pay(method) {
+  if (Object.keys(cart).length === 0) {
+    alert("Ваш кошик порожній!");
+    return;
+  }
+  const total = Object.values(cart).reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const tax = (total * 0.07).toFixed(2);
+  const grandTotal = (total + parseFloat(tax)).toFixed(2);
+  const orderId = Math.floor(Math.random() * 900000 + 100000);
+  const fiscal = Math.floor(Math.random() * 900000000 + 100000000);
+  const receiptData = {
+    orderId,
+    fiscal,
+    method,
+    total,
+    tax,
+    grandTotal,
+    date: new Date().toLocaleString(),
+  };
+  let text = `<h2>Електронний чек</h2>
+  <p><strong>Піцерія & Суші-Бар "FoodMix"</strong></p>
+  <p>Замовлення №${orderId}</p><hr>`;
+  for (let i in cart) {
+    text += `<p>${i} — ${cart[i].quantity} x ${cart[i].price} = ${cart[i].price * cart[i].quantity} грн</p>`;
+  }
+  text += `<hr><p>ПДВ: ${tax} грн</p>
+           <p><strong>До сплати: ${grandTotal} грн</strong></p>
+           <p>Оплата: ${method}</p>
+           <p>Фіскальний чек №${fiscal}</p>
+           <p>Дата: ${receiptData.date}</p>
+           <p>Дякуємо, що обрали нас! 🍕🍣🍔</p>`;
+  document.getElementById("receiptText").innerHTML = text;
+  document.getElementById("receipt").style.display = "block";
+  document.getElementById("qrcode").innerHTML = "";
+  new QRCode(document.getElementById("qrcode"), {
+    text: JSON.stringify(receiptData),
+    width: 150,
+    height: 150
+  });
+  cart = {};
+  saveCart();
+  updateCart();
+}
+
+function downloadPDF() {
+  const element = document.getElementById("receipt");
+  const opt = {
+    margin: 0.5,
+    filename: 'FoodMix_Чек.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+  };
+  html2pdf().set(opt).from(element).save();
+}
+
+showCategory('pizza');
+updateCart();
+</script>
+</body>
+</html>
