@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EatWave — Доставка їжі</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EatWave — Доставка піци, суші, бургерів, напоїв</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -13,10 +13,11 @@
 --accent-2:#0a63d8;
 --muted:#6b7280;
 --text:#0f1724;
---shadow:0 6px 18px rgba(11,116,255,0.06);
---vat-rate:0.2;
+--glass: rgba(11,116,255,0.06);
+--shadow: 0 6px 18px rgba(11,116,255,0.06);
+--vat-rate: 20;
 }
-*{box-sizing:border-box;}
+*{box-sizing:border-box}
 body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text);}
 header{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;padding:16px 20px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:40;box-shadow:0 6px 20px rgba(11,116,255,0.08);}
 .logo{display:flex;align-items:center;gap:12px;font-weight:700;font-size:20px;}
@@ -32,7 +33,7 @@ main.container{max-width:1200px;margin:6px auto;padding:12px;display:grid;grid-t
 .filter{display:flex;gap:8px;align-items:center;}
 .chip{background:var(--card);border:1px solid rgba(11,116,255,0.08);padding:8px 12px;border-radius:999px;font-weight:600;color:var(--accent-2);cursor:pointer;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
-.card{background:var(--card);border-radius:12px;padding:10px;border:1px solid #f0f6ff;box-shadow: 0 10px 30px rgba(15,23,36,0.03);display:flex;flex-direction:column;gap:8px;transition: transform 0.2s;}
+.card{background:white;border-radius:12px;padding:10px;border:1px solid #f0f6ff;box-shadow: 0 10px 30px rgba(15,23,36,0.03);display:flex;flex-direction:column;gap:8px;transition: transform 0.2s;}
 .card:hover{transform:translateY(-3px);}
 .card img{width:100%;height:140px;object-fit:cover;border-radius:8px;}
 .card h3{margin:0;font-size:15px;}
@@ -64,33 +65,38 @@ main.container{max-width:1200px;margin:6px auto;padding:12px;display:grid;grid-t
 </style>
 </head>
 <body>
+
 <header>
-<div class="logo"><div class="mark">EW</div><div><div style="font-size:18px">EatWave</div><div style="font-size:12px;color:rgba(255,255,255,0.95);font-weight:500">Доставка • Піца • Суші • Бургери • Напої</div></div></div>
+  <div class="logo"><div class="mark">EW</div><div><div style="font-size:18px">EatWave</div><div style="font-size:12px;color:rgba(255,255,255,0.95);font-weight:500">Доставка • Піца • Суші • Бургери • Напої</div></div></div>
+  <div style="margin-left:auto;text-align:right"><div style="font-weight:700">Доставка сьогодні</div><div style="font-size:13px;color:rgba(255,255,255,0.95)">Швидко, смачно, безпечно</div></div>
 </header>
+
 <section class="hero">
-<div>
-<h1>EatWave — Замовляй онлайн, ми доставимо</h1>
-<p>Велике меню з реальними фото. ПДВ — 20% включено у чек.</p>
-</div>
+  <div>
+    <h1>EatWave — Замовляй онлайн, ми доставимо</h1>
+    <p>Велике меню з реальними фото. ПДВ — 20% включено у чек.</p>
+  </div>
 </section>
 
-<main class="container">
-<section class="menu">
+<main class="container" role="main">
+<section class="menu" aria-label="Меню">
 <div class="controls">
 <div class="search"><input id="search" placeholder="Шукати піцу, суші, бургер, напій..." aria-label="Пошук"></div>
-<div class="filter">
-<div class="chip" onclick="filterCategory('all')">Усі</div>
-<div class="chip" onclick="filterCategory('pizza')">Піца</div>
-<div class="chip" onclick="filterCategory('sushi')">Суші</div>
-<div class="chip" onclick="filterCategory('burgers')">Бургери</div>
-<div class="chip" onclick="filterCategory('drinks')">Напої</div>
+<div class="filter" role="tablist" aria-label="Категорії">
+<div class="chip" data-cat="all" onclick="filterCategory('all')">Усі</div>
+<div class="chip" data-cat="pizza" onclick="filterCategory('pizza')">Піца</div>
+<div class="chip" data-cat="sushi" onclick="filterCategory('sushi')">Суші</div>
+<div class="chip" data-cat="burgers" onclick="filterCategory('burgers')">Бургери</div>
+<div class="chip" data-cat="drinks" onclick="filterCategory('drinks')">Напої</div>
 </div></div>
-<div id="itemsGrid" class="grid"></div>
+
+<div id="itemsGrid" class="grid" aria-live="polite"></div>
 </section>
 
 <aside class="cart">
 <h2>🛒 Кошик</h2>
 <div id="cartList" class="cart-list"></div>
+
 <div class="summary">
 <div class="summary-row"><div>Проміжна сума</div><div id="sub">0 ₴</div></div>
 <div class="summary-row"><div>ПДВ (20%)</div><div id="vat">0 ₴</div></div>
@@ -107,15 +113,16 @@ main.container{max-width:1200px;margin:6px auto;padding:12px;display:grid;grid-t
 </div>
 </div>
 </aside>
+</main>
 
 <div id="receiptModal">
-<div class="box">
+<div class="box" role="dialog" aria-modal="true">
 <h3>Електронний чек</h3>
 <div id="receiptContent"></div>
 <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-<button onclick="downloadReceipt()">Завантажити PDF</button>
-<button onclick="printReceipt()">Друк</button>
-<button onclick="closeReceipt()">Закрити</button>
+<button onclick="downloadReceipt()" style="background:var(--accent);color:white;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Завантажити PDF</button>
+<button onclick="printReceipt()" style="background:var(--accent-2);color:white;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Друк</button>
+<button onclick="closeReceipt()" style="background:#f0f2f5;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Закрити</button>
 </div>
 </div>
 </div>
@@ -123,75 +130,77 @@ main.container{max-width:1200px;margin:6px auto;padding:12px;display:grid;grid-t
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
 const VAT_RATE = 0.2;
-const categories = {
-pizza: [
-"Маргарита", "Пепероні", "Гавайська", "Чотири сири", "Карбонара",
-"Вегетаріанська", "М'ясна", "Сицилійська", "Тоскана", "Мексиканська",
-"Фрутті ді маре", "Баварська", "Чилі чікен", "Сирна", "Ріко",
-"Прошуто", "Пармезан", "Барбекю", "Медово-гірчична", "Діабло",
-"Капрічоза", "Кальцоне", "Неаполітанська", "Ріміні", "Тірольська",
-"Флорентійська", "Рокфор", "Мюнхенська", "Санторіні", "Морська"
-],
-sushi: [
-"Філадельфія", "Каліфорнія", "Унагі", "Нігірі лосось", "Нігірі тунець",
-"Ролл смугастий", "Ролл тигровий", "Темпура", "Снікерс рол", "Дракон",
-"Сяке рол", "Токіо рол", "Ебі рол", "Унагі макі", "Авокадо рол",
-"Чікен рол", "Вегі рол", "Тамаго рол", "Каппа макі", "Спайсі тунець",
-"Сакура рол", "Футомаки", "Дабл рол", "Філе рол", "Лосось рол",
-"Морський рол", "Спрінг рол", "Тонка риба рол", "Асі рол", "Зелений дракон"
-],
-burgers: [
-"Чізбургер", "Біг мак", "Воппер", "Класичний бургер", "Бекон бургер",
-"Дабл чиз", "Тайський бургер", "Вегі бургер", "Чилі бургер", "Мексиканський",
-"Теріякі бургер", "Баварський", "Барбекю бургер", "Курячий бургер", "Лососевий бургер",
-"Гавайський бургер", "Трюфельний", "Пікантний", "Американський", "Міні бургер",
-"Сендвіч бургер", "Бекон чиз", "Ранч бургер", "Класік BBQ", "М'ясний рулет",
-"Фіш бургер", "Чікен чиз", "Томато бургер", "Піца бургер", "Лава бургер"
-],
-drinks: [
-"Кола", "Фанта", "Спрайт", "Мохіто безалкогольний", "Лимонад",
-"Апельсиновий сік", "Яблучний сік", "Гранатовий сік", "Вода мінеральна", "Газована вода",
-"Айс Ті", "Кава латте", "Еспресо", "Какао", "Чай зелений",
-"Чай чорний", "Чай фруктовий", "Морс ягідний", "Смузі банан", "Смузі полуниця",
-"Смузі манго", "Смузі мікс", "Лате карамель", "Лате ваніль", "Матча латте",
-"Енергетик", "Піна кола", "Піна апельсин", "Какао маршмеллоу", "Молочний коктейль"
-]
-};
-const placeholderImages = {
-pizza:'https://source.unsplash.com/400x300/?pizza',
-sushi:'https://source.unsplash.com/400x300/?sushi',
-burgers:'https://source.unsplash.com/400x300/?burger',
-drinks:'https://source.unsplash.com/400x300/?drink'
-};
-const ITEMS=[];
-Object.keys(categories).forEach(cat=>{
-categories[cat].forEach((name,i)=>{
-ITEMS.push({id:`${cat}-${i}`,name,category:cat,price:Math.floor(Math.random()*200)+80,img:placeholderImages[cat]});
-});
-});
+
+function makeList(prefix,names,basePrice,seed){return names.map((nm,i)=>({id:`${prefix.toLowerCase()}-${i+1}`,name:nm,price:basePrice+Math.floor(Math.random()*80),img:`https://source.unsplash.com/640x420/?${encodeURIComponent(prefix)},food&sig=${seed+i}`,desc:`${nm} — свіжі інгредієнти, приготовано з любов'ю`,category:prefix.toLowerCase()}))}
+
+const pizzaNames=[/* 30 назв піци */"Маргарита","Пепероні","4 сири","Гавайська","Карбонара","Діабло","Чотири сезони","Мікс м'ясна","Вегетаріанська","Салямі","Барбекю","Маринара","Неаполітанська","Прошутто рукола","Мексиканська","Фунгі","Сициліана","Чорна перлина","Тосканська","Рукола та пармезан","Готська","Скандинавська","Капрічоза","Песто та помідори","Острівна","Кальцоне","Салатна піца","Трюфельна","Сирець","Морська"];
+const sushiNames=[/* 30 назв суші */"Філадельфія","Каліфорнія","Дракон рол","Темпура сет","Сяке макі","Туна рол","Ебі рол","Нігірі лосось","Нігірі тунець","Сет самурай","Сет імператор","Сет лосось люкс","Сет токіо","Сет кіото","Сет окінава","Сет морський","Сет романтик","Сет класік","Сет гейша","Сет сакура","Футомакі веган","Чікен рол","Кунсей рол","Крабовий рол","Ост-рол","Канада рол","Оші рол","Унагі рол","Філе рол","Суші-бокс"];
+const burgerNames=[/* 30 бургерів */"Класичний","Чізбургер","Дабл чіз","Бекон бургер","Курячий бургер","Веган бургер","BBQ Deluxe","Фіш бургер","Гострий бургер","Блю чіз","Гавайський бургер","Трюфельний бургер","Мексиканський","Овочевий","Чікен по-японськи","Бургер у беконі","Бургер з грибами","Сімейний","Сендвіч бургер","Каліфорнійський","Донер-бургер","Пікант","Листковий бургер","Міні-бургер сет","Пепероні бургер","Сирний рай","Часниковий","Бургер XL","Ранч бургер","Азійський бургер"];
+const drinkNames=[/* 30 напоїв */"Кола 0.5 л","Фанта 0.5 л","Спрайт 0.5 л","Кава еспресо","Капучино","Лате","Чай зелений","Чай чорний","Фреш апельсин","Сік яблуко","Мохіто безалкогольний","Лимонад","Імбирний ель","Мінеральна вода","Смузі ягідний","Смузі банан","Енергетик","Матча латте","Гарячий шоколад","Компот домашній","Коктейль фруктовий","Айс-чаї","Кокосова вода","Сік ананас","Тонік","Мансурі","Піночний латте","Грог","Трав'яний чай","Коктейль-мікс"];
+
+const ITEMS=[...makeList("Піца",pizzaNames,180,11),...makeList("Суші",sushiNames,320,41),...makeList("Бургер",burgerNames,150,71),...makeList("Напій",drinkNames,35,101)];
+
+let CART=JSON.parse(localStorage.getItem('eatwave_cart_v1')||'[]');
+
+function saveCart(){localStorage.setItem('eatwave_cart_v1',JSON.stringify(CART));updateCart();}
+
+function renderItems(items){
 const grid=document.getElementById('itemsGrid');
-function renderItems(list){grid.innerHTML=''; list.forEach(item=>{const card=document.createElement('div'); card.className='card'; card.innerHTML=`<img src="${item.img}" alt="${item.name}"><h3>${item.name}</h3><div class="price-row"><span>${item.price} ₴</span><button class="add-btn" onclick="addToCart('${item.id}')">Додати</button></div>`; grid.appendChild(card);});}
-renderItems(ITEMS);
-function filterCategory(cat){if(cat==='all') renderItems(ITEMS); else renderItems(ITEMS.filter(i=>i.category===cat));}
-document.getElementById('search').addEventListener('input',e=>{const val=e.target.value.toLowerCase(); renderItems(ITEMS.filter(i=>i.name.toLowerCase().includes(val)));});
-let cart=[]; const cartList=document.getElementById('cartList');
-function addToCart(id){const item=ITEMS.find(i=>i.id===id); const exist=cart.find(c=>c.id===id); if(exist) exist.qty++; else cart.push({...item,qty:1}); updateCart();}
-function changeQty(id,delta){const item=cart.find(c=>c.id===id); if(!item) return; item.qty+=delta; if(item.qty<1) cart=cart.filter(c=>c.id!==id); updateCart();}
-function updateCart(){cartList.innerHTML=''; let subtotal=0; cart.forEach(item=>{subtotal+=item.price*item.qty; const div=document.createElement('div'); div.className='cart-item'; div.innerHTML=`<img src="${item.img}" alt="${item.name}"><div class="meta"><div>${item.name}</div><div class="qty"><button onclick="changeQty('${item.id}',-1)">-</button>${item.qty}<button onclick="changeQty('${item.id}',1)">+</button></div></div><div>${item.price*item.qty} ₴</div>`; cartList.appendChild(div);}); const vat=Math.round(subtotal*VAT_RATE); document.getElementById('sub').innerText=subtotal+' ₴'; document.getElementById('vat').innerText=vat+' ₴'; document.getElementById('grand').innerText=(subtotal+vat)+' ₴';}
-function checkout(method){if(cart.length===0){alert('Кошик порожній!'); return;} const name=document.getElementById('custName').value||'Гість'; const phone=document.getElementById('custPhone').value||''; const addr=document.getElementById('custAddr').value||''; let content=`EatWave — Замовлення\nДата: ${new Date().toLocaleString()}\nМетод оплати: ${method==='card'?'Картка':'Готівка'}\n\nЗамовлення:\n`; cart.forEach(i=>{content+=`${i.name} x${i.qty} = ${i.price*i.qty} ₴\n`}); const subtotal=cart.reduce((a,c)=>a+c.price*c.qty,0); const vat=Math.round(subtotal*VAT_RATE); const total=subtotal+vat; content+=`\nПроміжна сума: ${subtotal} ₴
-```
+grid.innerHTML='';
+items.forEach(it=>{
+let card=document.createElement('div');card.className='card';
+card.innerHTML=`<img src="${it.img}" alt="${it.name}"><h3>${it.name}</h3><div class="muted">${it.desc}</div><div class="price-row"><div>${it.price} ₴</div><button class="add-btn" onclick="addToCart('${it.id}')">🛒</button></div>`;
+grid.appendChild(card);
+});
+}
 
+function addToCart(id){
+let item=ITEMS.find(i=>i.id===id);
+let existing=CART.find(c=>c.id===id);
+if(existing){existing.qty+=1}else{CART.push({...item,qty:1});}
+saveCart();
+}
 
-Я можу завершити і надіслати тобі **повний робочий HTML-файл EatWave** з усіма стравами, картинками та кошиком.
+function updateCart(){
+const list=document.getElementById('cartList');list.innerHTML='';
+let subtotal=0;
+CART.forEach(c=>{
+let row=document.createElement('div');row.className='cart-item';
+row.innerHTML=`<img src="${c.img}" alt="${c.name}"><div class="meta"><div>${c.name}</div><div class="qty"><button onclick="changeQty('${c.id}',-1)">-</button>${c.qty}<button onclick="changeQty('${c.id}',1)">+</button></div></div><div>${c.price*c.qty} ₴</div>`;
+list.appendChild(row);
+subtotal+=c.price*c.qty;
+});
+document.getElementById('sub').textContent=subtotal+' ₴';
+let vat=Math.round(subtotal*VAT_RATE);document.getElementById('vat').textContent=vat+' ₴';
+document.getElementById('grand').textContent=(subtotal+vat)+' ₴';
+}
 
-Щоб зробити сайт повністю функціональним:
+function changeQty(id,delta){let c=CART.find(i=>i.id===id);if(c){c.qty+=delta;if(c.qty<1)CART=CART.filter(x=>x.id!==id);saveCart();}}
 
-1. **Створюєш файл `index.html`** на своєму комп’ютері.
-2. Копіюєш у нього цей код.
-3. Відкриваєш у браузері — все працюватиме офлайн.
-4. Після перевірки можна завантажити на GitHub Pages.
+function filterCategory(cat){renderItems(cat==='all'?ITEMS:ITEMS.filter(i=>i.category===cat));document.getElementById('search').value='';}
 
-Якщо хочеш, я можу **одразу скласти і надіслати готовий файл з усіма 120+ позиціями** (30 на категорію) із постійними картинками та робочим кошиком.
+document.getElementById('search').addEventListener('input',e=>{let v=e.target.value.toLowerCase();renderItems(ITEMS.filter(i=>i.name.toLowerCase().includes(v)||i.desc.toLowerCase().includes(v)));});
 
-Хочеш, щоб я це зробив?
+function checkout(method){
+let name=document.getElementById('custName').value.trim();
+let phone=document.getElementById('custPhone').value.trim();
+let addr=document.getElementById('custAddr').value.trim();
+if(!name||!phone||!addr){alert('Заповніть всі поля доставки!');return;}
+let subtotal=0;CART.forEach(c=>{subtotal+=c.price*c.qty;});
+let vat=Math.round(subtotal*VAT_RATE);let total=subtotal+vat;
+let txt=`Замовник: ${name}\nТелефон: ${phone}\nАдреса: ${addr}\nМетод оплати: ${method}\n\nЗамовлення:\n`;
+CART.forEach(c=>{txt+=`${c.name} × ${c.qty} = ${c.price*c.qty} ₴\n`});
+txt+=`\nПроміжна сума: ${subtotal} ₴\nПДВ 20%: ${vat} ₴\nДо сплати: ${total} ₴`;
+document.getElementById('receiptContent').textContent=txt;
+document.getElementById('receiptModal').style.display='flex';
+}
 
+function closeReceipt(){document.getElementById('receiptModal').style.display='none';CART=[];saveCart();}
+function downloadReceipt(){var element=document.getElementById('receiptContent');html2pdf().set({margin:0.5,filename:'receipt.pdf'}).from(element).save();}
+function printReceipt(){var printContents = document.getElementById('receiptContent').innerHTML;var originalContents = document.body.innerHTML;document.body.innerHTML = printContents;window.print();document.body.innerHTML = originalContents;}
+
+renderItems(ITEMS);updateCart();
+</script>
+
+</body>
+</html>
